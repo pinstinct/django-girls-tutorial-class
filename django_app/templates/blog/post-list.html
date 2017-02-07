@@ -1,24 +1,16 @@
-<!doctype html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Blog</title>
-</head>
-<body>
-    <h1>Lim HyunMin's Blog!</h1>
-    <h3>Post list</h3>
+{% extends 'blog/base.html' %}
+
+{%block subtitle %}Post list{% endblock %}
+
+{% block content %}
     {% if post_list %}
         {% for post in post_list %}
         <div>
-            <h4><a href="/post/{{ post.id }}" >{{ post.title }}</a></h4>
+            <h4><a href="{% url 'post_detail' post_id=post.id %}" >{{ post.title }}</a></h4>
             <p>{{ post.content |truncatechars:200}}</p>
         </div>
         {% endfor %}
     {% else %}
     <p>empty list</p>
     {% endif %}
-</body>
-</html>
+{% endblock %}
