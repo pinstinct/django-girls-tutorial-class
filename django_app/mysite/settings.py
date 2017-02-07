@@ -16,6 +16,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 개발단계에서 정적 파일을 저장할 디렉토리
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+# 템플릿을 저장할 디렉토리
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 # runserver에서 정적파일을 로드할 디렉토리 목록
 STATICFILES_DIRS = [
@@ -65,7 +67,9 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            TEMPLATES_DIR,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
