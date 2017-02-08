@@ -3,6 +3,7 @@
 {%block subtitle %}Post list{% endblock %}
 
 {% block content %}
+<button><a href="{% url 'post_add' %}">Write Post</a></button>
     {% if post_list %}
         {% for post in post_list %}
         <div>

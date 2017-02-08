@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-
+{%block subtitle %}{% endblock %}
 {% block content %}
     <a href="{% url 'post_list' %}">Back to Post list</a>
     <h1>{{ post.title }}</h1>
