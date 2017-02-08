@@ -2,8 +2,10 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import Post
 from django.shortcuts import get_object_or_404
+
+from .models import Post
+from .forms import PostForm
 
 
 def post_list(request):
@@ -39,15 +41,27 @@ def post_add(request):
         # 요청받은 데이터를 출력
         data = request.POST
         # html의 name이 키값
-        title = data['input_title']
-        content = data['input_content']
+
+
+        # PostForm에 data인자로 request.POST 데이터를 전달해준다
+        form = PostForm(data=request.POST)
+        # title = data['input_title']
+        # content = data['input_content']
         author = User.objects.get(id=1)
         # print(request.POST)
         # ret = ','.join([title, content])
 
-        # 받은 데이터를 사용해세 Post 객체를 생성
-        p = Post(title=title, content=content, author=author)
-        p.save()
+        # 만약 PostForm객체가 유효할 경우(전달된 데이터의 형식이 PostForm 에 정의한 형식과과 맞을 경우)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            content = form.cleaned_data['content']
+
+            # 받은 데이터를 사용해세 Post 객체를 생성
+            p = Post(title=title, content=content, author=author)
+            p.save()
+
+        else:
+            return HttpResponse('Form invalid {}'.format(form.errors))
 
         # redirect메서드는 인자로 주어진
         # URL 또는
@@ -61,6 +75,11 @@ def post_add(request):
 
 
     else:
+        # PostForm형 객체를 만들어 context에 할당
+        form = PostForm()
+        context = {
+            'form': form,
+        }
         # 요청의 method가 POST가 아닐 경우
         # 글 쓰기 양식이 있는 템플릿을 렌더해서 리턴
-        return render(request, 'blog/post-add.html')
+        return render(request, 'blog/post-add.html', context)
